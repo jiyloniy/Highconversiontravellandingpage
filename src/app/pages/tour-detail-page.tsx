@@ -9,7 +9,6 @@ import {
   Check,
   Calendar,
   Phone,
-  Mail,
   User,
   ArrowLeft,
   Mountain,
@@ -27,7 +26,6 @@ export function TourDetailPage() {
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
-    email: "",
     date: "",
     guests: "1",
     message: "",
@@ -115,7 +113,6 @@ export function TourDetailPage() {
       reviews: "reviews",
       name: "Full Name",
       phone: "Phone Number",
-      email: "Email Address",
       date: "Preferred Date",
       guests: "Number of Guests",
       message: "Additional Message",
@@ -142,7 +139,6 @@ export function TourDetailPage() {
       reviews: "отзывов",
       name: "Полное имя",
       phone: "Номер телефона",
-      email: "Электронная почта",
       date: "Предпочитаемая дата",
       guests: "Количество гостей",
       message: "Дополнительное сообщение",
@@ -169,7 +165,6 @@ export function TourDetailPage() {
       reviews: "sharh",
       name: "To'liq ism",
       phone: "Telefon raqam",
-      email: "Email manzil",
       date: "Kerakli sana",
       guests: "Mehmonlar soni",
       message: "Qo'shimcha xabar",
@@ -194,27 +189,37 @@ export function TourDetailPage() {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Simulate sending request
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-
-    // Send to Telegram
     const telegramMessage = `
 🎯 Yangi tur band qilish so'rovi!
 
 📌 Tur: ${getTranslatedName()}
+💰 Narx: $${tour.price}
 👤 Ism: ${formData.name}
 📞 Telefon: ${formData.phone}
-✉️ Email: ${formData.email}
 📅 Sana: ${formData.date}
 👥 Mehmonlar: ${formData.guests}
 💬 Xabar: ${formData.message || "Yo'q"}
-    `;
+    `.trim();
 
-    // Open Telegram
-    window.open(
-      `https://t.me/mandarintour_namangaan?text=${encodeURIComponent(telegramMessage)}`,
-      "_blank"
-    );
+    try {
+      const BOT_TOKEN = '8684844064:AAEreGByfuuTCrwe2umnW3rBt5x6RL4KMKg';
+      const CHAT_ID = '-1003927231846';
+      const response = await fetch(
+        `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            chat_id: CHAT_ID,
+            text: telegramMessage,
+            parse_mode: 'HTML',
+          }),
+        }
+      );
+      if (!response.ok) throw new Error('Telegram API error');
+    } catch (err) {
+      console.error('Failed to send to Telegram:', err);
+    }
 
     setIsSubmitting(false);
     setShowSuccess(true);
@@ -414,21 +419,6 @@ export function TourDetailPage() {
                             onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                             className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#F97316] focus:border-transparent"
                             placeholder="+998"
-                          />
-                        </div>
-
-                        <div>
-                          <label className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-2">
-                            <Mail className="w-4 h-4 text-[#F97316]" />
-                            {t.email}
-                          </label>
-                          <input
-                            type="email"
-                            required
-                            value={formData.email}
-                            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#F97316] focus:border-transparent"
-                            placeholder="email@example.com"
                           />
                         </div>
 
