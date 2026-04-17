@@ -6,8 +6,8 @@ import { LanguageSwitcher } from "./language-switcher";
 import logoHorizontal from "../../imports/01_horizontal@2x-8_(2).png";
 import logoIcon from "../../imports/LOGO.png";
 
-export function Navigation() {
-  const [isScrolled, setIsScrolled] = useState(false);
+export function Navigation({ solid = false }: { solid?: boolean }) {
+  const [isScrolled, setIsScrolled] = useState(solid);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { t, lang } = useLang();
 
@@ -20,7 +20,7 @@ export function Navigation() {
   ];
 
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 50);
+    const handleScroll = () => setIsScrolled(solid || window.scrollY > 50);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);

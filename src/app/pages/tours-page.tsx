@@ -67,7 +67,7 @@ export function ToursPage() {
 
   return (
     <div className="min-h-screen bg-white font-['Poppins',sans-serif]">
-      <Navigation />
+      <Navigation solid />
       
       {/* Hero */}
       <section className="relative pt-32 pb-16 bg-gradient-to-br from-[#0F172A] via-[#1E293B] to-[#0F172A]">

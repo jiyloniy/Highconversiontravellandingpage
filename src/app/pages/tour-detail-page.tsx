@@ -227,7 +227,7 @@ export function TourDetailPage() {
 
   return (
     <div className="min-h-screen bg-white font-['Poppins',sans-serif]">
-      <Navigation />
+      <Navigation solid />
 
       {/* Hero Gallery */}
       <section className="pt-24 pb-8">
